@@ -5,6 +5,8 @@
 ## How to start local MCP server
 
 ```bash
+# Ensure to configure GEMINI_API_KEY, eg:
+# GEMINI_API_KEY=YOUR_GEMINI_TOKEN
 npm run server # npm run build + npm run server (express server)
 npm run inspect # npm run inspector in another terminal
 ```
