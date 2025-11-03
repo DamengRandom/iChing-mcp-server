@@ -9,14 +9,14 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: "*", // tighten for production
+    origin: "*",
     exposedHeaders: ["Mcp-Session-Id"],
   })
 );
 
 app.post("/mcp", async (req: Request, res: Response) => {
   const server = createMCPServer();
-  const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: undefined });
+  const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: undefined, enableJsonResponse: true });
 
   try {
     await server.connect(transport);

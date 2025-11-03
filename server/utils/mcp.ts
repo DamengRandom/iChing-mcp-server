@@ -26,7 +26,7 @@ export function createMCPServer() {
       },
     },
     async ({ xia, shang, yao }: IYiChing, extra) => {
-      const gua = getGua({ xia, shang, yao });
+      const guaWithYao = getGua({ xia, shang, yao });
       const progressToken = extra?._meta?.progressToken;
 
       const reportProgress = async (progress: number, message: string) => {
@@ -42,21 +42,21 @@ export function createMCPServer() {
         }
       };
 
-      if (!gua) {
+      if (!guaWithYao) {
         throw new Error("抱歉, 系统暂时无法预测, 请稍后在尝试, 非常感谢.");
       }
 
-      await reportProgress(0.25, `已生成卦象 ${gua}，正在请求模型`);
+      await reportProgress(0.25, `已生成卦象 ${guaWithYao}，正在请求模型`);
       
-      const result = await askLLM(gua);
+      const result = await askLLM(guaWithYao);
       
       await reportProgress(0.9, "模型响应已返回，正在整理结果");
 
       await reportProgress(1, "卦象解读完成");
 
       return {
-        content: [{ type: "text", text: JSON.stringify({ gua, result }) }],
-        structuredContent: { gua, result },
+        content: [{ type: "text", text: JSON.stringify({ gua: guaWithYao, result }) }],
+        structuredContent: { gua: guaWithYao, result },
       };
     }
   );
